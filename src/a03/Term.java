@@ -19,8 +19,8 @@ public class Term {
 	 * @param weight
 	 */
     public Term(String query, double weight){
-    	if(query == null) { throw new java.lang.NullPointerException(); }
-    	if(weight < 0) { throw new java.lang.IllegalArgumentException(); }
+    	if (query == null) { throw new java.lang.NullPointerException(); }
+    	if (weight < 0) { throw new java.lang.IllegalArgumentException(); }
     	this.query = query;
     	this.weight = weight;
     	
@@ -31,7 +31,7 @@ public class Term {
      * @return
      */
     public static Comparator<Term> byReverseWeightOrder(){
-		return null;
+		return new CompareByReverseWeightOrder();
 	}
 
     /**
@@ -40,7 +40,8 @@ public class Term {
      * @return TODO (what does this return?)
      */
     public static Comparator<Term> byPrefixOrder(int r){
-		return null; 	
+    	if (r < 0) { throw new java.lang.IllegalArgumentException(); }
+		return new CompareByPrefixOrder(r); 	
     }
     
     /**
@@ -49,7 +50,7 @@ public class Term {
      * @return
      */
     public int compareTo(Term that){
-		return 0; // TODO
+		return Integer.parseInt(this.query) - Integer.parseInt(that.query);
 	}
     
     /**
@@ -57,10 +58,10 @@ public class Term {
      * the weight, followed by a tab, followed by the query.
      */     
     public String toString(){
-		return null; // TODO
+		return String.format("%f %-8s", this.weight, this.query); 
 	}
     
-    private static class compareByReverseWeightOrder implements Comparator<Term> {
+    private static class CompareByReverseWeightOrder implements Comparator<Term> {
 
 		@Override
 		public int compare(Term o1, Term o2) {
@@ -70,7 +71,12 @@ public class Term {
     	
     }
     
-    private static class compareByPrefixOrder implements Comparator<Term> {
+    private static class CompareByPrefixOrder implements Comparator<Term> {
+    	private int r;
+    	
+    	private CompareByPrefixOrder(int r){
+    		this.r = r;
+    	}
 
 		@Override
 		public int compare(Term o1, Term o2) {
