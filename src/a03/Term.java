@@ -2,12 +2,16 @@ package a03;
 
 import java.util.Comparator;
 
+
+
 /**
  * TODO Add class description
  * @author Teako Warfield-Graham and Gabriel
  *
  */
 public class Term {
+	private String query;
+	private double weight;
 	
 	/**
 	 * Initialize a term with the given query string and weight.
@@ -15,6 +19,10 @@ public class Term {
 	 * @param weight
 	 */
     public Term(String query, double weight){
+    	if(query == null) { throw new java.lang.NullPointerException(); }
+    	if(weight < 0) { throw new java.lang.IllegalArgumentException(); }
+    	this.query = query;
+    	this.weight = weight;
     	
     }
 
@@ -51,5 +59,25 @@ public class Term {
     public String toString(){
 		return null; // TODO
 	}
+    
+    private static class compareByReverseWeightOrder implements Comparator<Term> {
+
+		@Override
+		public int compare(Term o1, Term o2) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+    	
+    }
+    
+    private static class compareByPrefixOrder implements Comparator<Term> {
+
+		@Override
+		public int compare(Term o1, Term o2) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+    	
+    }
 
 }
