@@ -1,5 +1,6 @@
 package a03;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 
@@ -21,6 +22,7 @@ public class Term {
     public Term(String query, double weight){
     	if (query == null) { throw new java.lang.NullPointerException(); }
     	if (weight < 0) { throw new java.lang.IllegalArgumentException(); }
+    	
     	this.query = query;
     	this.weight = weight;
     	
@@ -50,7 +52,7 @@ public class Term {
      * @return
      */
     public int compareTo(Term that){
-		return Integer.parseInt(this.query) - Integer.parseInt(that.query);
+		return this.query.compareTo(that.query); // this doesn't work since query isn't a string number
 	}
     
     /**
@@ -58,15 +60,14 @@ public class Term {
      * the weight, followed by a tab, followed by the query.
      */     
     public String toString(){
-		return String.format("%f %-8s", this.weight, this.query); 
+		return String.format("%f %8s", this.weight, this.query); 
 	}
     
     private static class CompareByReverseWeightOrder implements Comparator<Term> {
 
 		@Override
-		public int compare(Term o1, Term o2) {
-			// TODO Auto-generated method stub
-			return 0;
+		public int compare(Term a, Term b) {
+			return  Double.compare(b.weight, a.weight);
 		}
     	
     }
@@ -79,11 +80,33 @@ public class Term {
     	}
 
 		@Override
-		public int compare(Term o1, Term o2) {
-			// TODO Auto-generated method stub
-			return 0;
+		public int compare(Term a, Term b) {
+			if ( r == 0 ) { r = 1; } // if a zero is passed we will return index 0 of string (aka first character of string)
+			System.out.println("term a " + a.query.substring(0, r) + " term b " + b.query.substring(0, r)); // just for testing will remove
+			return a.query.substring(0, r).compareTo(b.query.substring(0, r));
 		}
     	
     }
+    
+    
+    public static void main(String[] args) {
+    	Term[] terms = {new Term("test", 6), new Term("boy", 2), new Term("cat", 3)};
+    	Term term1 = new Term("applation", 2);
+    	Term term2 = new Term("apple", 3);
+//    	System.out.println(term1.compareTo(term2));
+//    	System.out.println(term1.byReverseWeightOrder().compare(term1, term2));
+//    	System.out.print(Arrays.toString(terms));
+//    	int r = 3;
+//    	String string = "string";
+//    	System.out.println(string.charAt(r));
+//    	System.out.println(string.substring(0, r));
+    	CompareByPrefixOrder prefix = new CompareByPrefixOrder(0);
+    	System.out.println(prefix.compare(term1, term2));
+    	
+    	String empty = "";
+    	System.out.println("empty string " + empty.length()); // will need to return all queries if query is empty
+    	
+    }
+    
 
 }
